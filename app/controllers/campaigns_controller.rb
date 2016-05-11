@@ -6,7 +6,7 @@ class CampaignsController < ApplicationController
   end
 
   def create
-    @campaign = Campaign.create(campaign_params)
+    @campaign = Campaign.new(campaign_params)
     if @campaign.save
       redirect_to campaign_path(@campaign), notice: "Campaign created!"
       # sends an empty render that will return a 200 response
@@ -22,7 +22,12 @@ class CampaignsController < ApplicationController
 
   def index
     @campaigns = Campaign.order(:created_at)
+    respond_to do |format|
+      format.json { render json: @campaigns.to_json }
+      format.html { render }
+    end
   end
+
 
   def edit
   end

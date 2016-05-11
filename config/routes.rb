@@ -1,6 +1,17 @@
 Rails.application.routes.draw do
   resources :users, only: [:new, :create]
-  resources :campaigns
+  resources :campaigns do
+    resources :pledges, only: [:new, :create]
+  end
+
+  namespace :api, defaults: {format: :json} do
+    namespace :v1 do
+      resources :campaigns
+    end
+    namespace :v2 do
+      resources :campaigns
+    end
+  end
 
   root "campaigns#index"
   # ^ 'resources' includes: :new, :create, :show, :index, :edit, :update, :destroy
